@@ -1,0 +1,54 @@
+\section{Fragen}
+
+\subsection{Q1}
+
+Warum ist das Produkt zweier Werte im Q15-Format (\lstinline{short int}) in
+der Funktion \lstinline{goertzel_filter_v0()} mit 14 Bit skaliert statt mit
+15 Bit?
+
+\subsubsection*{Antwort}
+Im Normalfall kann das Produkt zweier Q15 Werte mit einem Bitshift um 15 Bit
+skaliert werden.
+\[ 
+	( a_{Q_{15}} \cdot b_{Q_{15}}) \cdot \frac{1}{2^{15}} = c_{Q_{15}}
+\]
+Dies gilt jedoch nur wenn die beiden Faktoren nicht dem Maximalwert
+entsprechen.
+\[
+	a = b = 2^{15}
+\]
+Als Regel kann man also formulieren, dass die Skalierung um so viele Bit
+erfolgen muss, wie die Werte der Faktoren haben. Für den Spezialfall, dass
+beide Faktoren den Maximalwert annehmen, muss um ein weiteres Bit geschoben
+werden um einen Overflow zu verhindern.
+
+Da im Code von \lstinline{goertzel_filter_v0()} nur um 14 Bit skaliert wird,
+muss also schon einer der Faktoren mit einer Zweierpotenz skaliert sein.
+Ein Blick in die Headerdatei \lstinline{goertzel.h} zeigt, dass die
+Koeffizienten bereits als $\frac{a}{2}$ eingetragen sind. Somit wird das
+Produkt schlussendlich doch mit $14+1=15$ Bit skaliert.
+\[
+	\left( \frac{a}{2^1} \cdot b \right) \cdot \frac{1}{2^{14}}
+	= \frac{a b}{2^{(1+14)}}
+	= \frac{a b}{2^{15}}
+	= c
+\]
+
+\subsection{Q2}
+
+Warum reduziert \lstinline{goertzel_filter_v1()} nicht nur den Speicherbedarf
+sondern auch die Rechenzeit?
+
+\subsection{Q3}
+
+Ausgehend von der Formel (4.47) aus dem Skript soll gezeigt werden, dass die
+Berechnungsmethode für die Signalleistung in der Funktion
+\lstinline{goertzel_filter_v0} identisch ist zu jener welche in der Abbildung
+4.17 gezeigt wird ausser mit dem Unterschied zum finalen Skalierungsfaktor 
+$\frac{2}{N^2}$.
+
+\subsection{Q4}
+
+Vergleichen Sie die Berechnungsmethoden der Versionen \lstinline{v0} und
+\lstinline{v1} bezüglich deren Effizienz und numerischen Robustheit.
+Welche Version ist vorzuziehen?
