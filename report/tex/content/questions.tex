@@ -39,6 +39,17 @@ Produkt schlussendlich doch mit $14+1=15$ Bit skaliert.
 Warum reduziert \lstinline{goertzel_filter_v1()} nicht nur den Speicherbedarf
 sondern auch die Rechenzeit?
 
+\subsubsection*{Antwort}
+Die Anpassung des Algorithmus reduziert die Arraylänge von 3 auf 2 Elemente.
+Dies ist eine offensichtliche Reduktion von Speicherbedarf. Die Rechenzeit
+wird aber ebenfalls reduziert da ein Speicherzugriff entfällt. Dieser dürfte
+sehr langsam sein, da dieser per Pointer referenziert wird und sicher nicht
+nahe der CPU liegt (also kein Register). Die Berechnung, welche nun ohne
+diesen Speicherzugriff erfolgt, wird zudem nur noch mit dem \lstinline{input}
+Wert berechnet, welcher zudem per \emph{call-by-value} übergeben wird und
+somit auf dem Stack liegt. Dies ist sicherlich massiv schneller als eine
+Berechnung per Lese- und Schreibzugriff auf entfernten Speicher.
+
 \subsection{Q3}
 
 Ausgehend von der Formel (4.47) aus dem Skript soll gezeigt werden, dass die
@@ -46,6 +57,79 @@ Berechnungsmethode für die Signalleistung in der Funktion
 \lstinline{goertzel_filter_v0} identisch ist zu jener welche in der Abbildung
 4.17 gezeigt wird ausser mit dem Unterschied zum finalen Skalierungsfaktor 
 $\frac{2}{N^2}$.
+
+\subsubsection*{Antwort}
+Formel aus dem Skript
+\[
+	P_k
+	= 2 \left| \frac{X[k]}{N} \right|^2
+	= \frac{2}{N^2} \left( \Re\{X[k]\}^2 + \Im\{X[k]\}^2 \right)
+\]
+Berechnung aus dem Code
+\[
+	\left( x[k-1] \right)^2
+		+ \left( x[k-1] \right)^2
+		- \left( a \cdot x[k-1] \cdot x[k-2] \right)
+\]
+Vom Parseval'schen Theorem wissen wir, dass für $n = N$ gilt
+\[
+	y_k[n] |_{n=N}
+	= \sum_{i=0}^{N-1} x[i] W_N^{-k(N-1)}
+	= X[k]
+\]
+Aus der Transferfunktion
+\[
+	y_k[n] = s[n] - W_N^k \cdot s[n-1]
+\]
+können wir nun die Leistungsformel mit den Werten aus dem Zeitbereich
+formulieren zu
+\[
+	P_k = \frac{2}{N^2} \left(
+		\left\lVert s[n] - W_N^k \cdot s[n-1] \right\rVert
+	\right)^2
+\]
+In dieser Form können wir das $n$ beliebig schieben solange wir diese
+Verschiebung auf allen Elementen machen. Somit können wir dies umschreiben zu
+\[
+	P_k = \frac{2}{N^2} \left(
+		\left\lVert s[n-1] - W_N^k \cdot s[n-2] \right\rVert
+	\right)^2
+\]
+Wenden wir nun die Operationen an so ergibt dies
+\[
+	P_k
+	= \frac{2}{N^2} \left(
+		s^2[n-1] + W_N^{2k} \cdot s^2[n-2]
+		- 2 \cdot W_N^k \cdot s[n-1] \cdot s[n-2]
+	\right)
+\]
+Mit der euler'schen Darstellung des \emph{twiddle factor}
+\[
+	W_N = e^{-j\frac{2 \pi}{N}}
+\] 
+ergibt sich die Rechnung zu
+\[
+	P_k
+	= \frac{2}{N^2} \left(
+		s^2[n-1] + e^{-j\frac{4 \pi k}{N}} \cdot s[n-2]
+		- 2 e^{-j\frac{2 \pi k}{N}} \cdot s[n-1] \cdot s[n-2] 
+	\right)
+\]
+Vergleicht man nun diese Formel mit jener welche im Code implementiert ist,
+so zeigt sich, dass die $e$-Funktionen zu 1 werden müssen und $a=2$ ist. In
+diesem Falle sind diese beiden Formeln gleich.
+\[
+	\begin{array}{r c l}
+	P_k & = & \frac{2}{N^2} \left(
+		s^2[n-1] +
+		\underbrace{e^{-j\frac{4 \pi k}{N}}}_{1} \cdot s^2[n-2]
+		- 2 \underbrace{e^{-j\frac{2 \pi k}{N}}}_{1} \cdot s[n-1] \cdot s[n-2] 
+	\right) \\
+	& \Rightarrow & \frac{2}{N^2} \left(
+		s^2[n-1] + \cdot s^2[n-2] - 2 \cdot s[n-1] \cdot s[n-2] 
+	\right)
+	\end{array}
+\]
 
 \subsection{Q4}
 
