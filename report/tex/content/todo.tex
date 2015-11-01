@@ -2,9 +2,26 @@
 
 \subsection{ToDo -- 1}
 
+\subsubsection{A}
+Die Werte sind gegeben in der AppNote SPRA096A (p2, figure 1).
+
+\subsubsection{B}
+Der Wert für \lstinline{SCALING_FREQUENCY} ergibt sich aus
+\[
+	\Delta x = \frac{2 \pi f}{f_s} \\
+	= 2 \cdot (2^{15} - 1 ) \cdot \frac{f}{f_s} \\
+	= \underbrace{\frac{2 \cdot (2^{15} -1 )
+		\cdot 2^{11}}{f_s}}_{\text{\lstinline{SCALING_FREQUENCY}}}
+		\cdot \frac{f}{2^{11}} \qquad ,fs = 8\text{kHz}
+\]
+\[
+	\Rightarrow \text{\lstinline{SCALING_FREQUENCY}} = 
+	\frac{2 \cdot (2^{15} -1 ) \cdot 2^{11}}{8\text{kHz}}
+		\approx 16777 \left[ \frac{1}{\text{Hz}} \right]
+\]
 
 \subsection{ToDo -- 2}
-
+Die Werte sind gegeben in der AppNote SPRA096A (p7, table 2).
 
 \subsection{ToDo -- 3}
 Um das Array \lstinline{delay[]} auf zwei Elemente zu reduzieren kann der
