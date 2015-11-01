@@ -1,0 +1,17 @@
+# latex build files
+*.aux
+*.log
+*.toc
+*.bbl
+*.blg
+*.lof
+*.out
+*.synctex.gz
+*.nav
+*.snm
+
+# ignore doc
+*.pdf
+
+# ignore all data
+/data

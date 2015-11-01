@@ -1,0 +1,21 @@
+% clean up environment
+clear all; close all;
+
+%%
+
+% define QPSK sequence
+g = 1;
+
+x1 = ifft([ 0 g+0   0 0 0 0 0 g-0   ]);
+y1 = ifft([ 0 0+g*j 0 0 0 0 0 0-g*j ]);
+z1 = ifft([ 0 g+g*j 0 0 0 0 0 g-g*j ]);
+
+% plot signal
+plot([0:7], z1, 'mo-'); hold on  % complex
+plot([0:7], x1, 'ko-'); hold on  % real
+plot([0:7], y1, 'bo-');          % imaginary
+grid on;
+xlabel('n');
+ylabel('x[n], y[n], z[n]');
+axis([0 7 -0.5 0.5]);
+legend('complex', 'real part', 'imag part', 'Location', 'NorthWest');
