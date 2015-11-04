@@ -48,7 +48,7 @@ nahe der CPU liegt (also kein Register). Die Berechnung, welche nun ohne
 diesen Speicherzugriff erfolgt, wird zudem nur noch mit dem \lstinline{input}
 Wert berechnet, welcher zudem per \emph{call-by-value} übergeben wird und
 somit auf dem Stack liegt. Dies ist sicherlich massiv schneller als eine
-Berechnung per Lese- und Schreibzugriff auf entfernten Speicher.
+Berechnung per Lese- und Schreibzugriff auf entfernten Speicher (Heap).
 
 \subsection{Q3}
 
@@ -88,8 +88,9 @@ formulieren zu
 		\left\lVert s[n] - W_N^k \cdot s[n-1] \right\rVert
 	\right)^2
 \]
-In dieser Form können wir das $n$ beliebig schieben solange wir diese
-Verschiebung auf allen Elementen machen. Somit können wir dies umschreiben zu
+In dieser Form können wir das $n$ schieben da es für die Applikation
+nicht darauf ankommt ob es beim Sample $x$ oder $x+1$ ausgewertet wird.
+Somit können wir dies umschreiben zu
 \[
 	P_k = \frac{2}{N^2} \left(
 		\left\lVert s[n-1] - W_N^k \cdot s[n-2] \right\rVert
@@ -123,10 +124,10 @@ diesem Falle sind diese beiden Formeln gleich.
 	P_k & = & \frac{2}{N^2} \left(
 		s^2[n-1] +
 		\underbrace{e^{-j\frac{4 \pi k}{N}}}_{1} \cdot s^2[n-2]
-		- 2 \underbrace{e^{-j\frac{2 \pi k}{N}}}_{1} \cdot s[n-1] \cdot s[n-2] 
+		- 2 \cdot \underbrace{e^{-j\frac{2 \pi k}{N}}}_{1} \cdot s[n-1] \cdot s[n-2] 
 	\right) \\
 	& \Rightarrow & \frac{2}{N^2} \left(
-		s^2[n-1] + \cdot s^2[n-2] - 2 \cdot s[n-1] \cdot s[n-2] 
+		s^2[n-1] + s^2[n-2] - 2 \cdot s[n-1] \cdot s[n-2] 
 	\right)
 	\end{array}
 \]

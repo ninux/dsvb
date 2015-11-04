@@ -34,6 +34,39 @@ delay[0] <- output;
 \end{lstlisting}
 
 \subsection{ToDo -- 4}
+Um die Koeffizienten zu berechnen müssen wir den Ausdruck für $W_N$ in
+Real- und Imaginärteil zerlegen. Allgemein gilt die Beziehung
+\[
+	e^{j\varphi} =
+		\underbrace{\cos(\varphi)}_{\Re\{e^{j\varphi}\}}
+		+ j \underbrace{\sin(\varphi)}_{\Im\{e^{j\varphi}\}}
+\]
+Daraus leiten wir nun ab, wie die Koeffizienten zu berechnen sind für die
+\emph{twiddle factors}
+\[
+	W_N
+	= e^{-j\frac{2 \pi f}{f_s}}
+	= \cos\left(\frac{2 \pi f}{f_s}\right)
+		- j\sin\left(\frac{2 \pi f}{f_s}\right)
+	\qquad , f_s = 8 \text{kHz}
+\]
 
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{r r r}
+		$f$	& $\Re(z) 2^{15}$	& $\Im(z) 2^{15}$ \\
+		\hline
+		697	& 27 980	& -17 055 \\
+		770	& 26 956	& -18 631 \\
+		825	& 26 127	& -19 777 \\
+		941	& 24 219	& -22 072 \\
+		1 209	& 19 073	& -26 645 \\
+		1 336	& 16 325	& -28 412 \\
+		1 477	& 13 085	& -30 042 \\
+		1 633	& 9 315		& -31 416 \\
+	\end{tabular}
+	\caption{Twilldle Koeffizienten}
+\end{table}
 
 \subsection{ToDo -- 5}
+
