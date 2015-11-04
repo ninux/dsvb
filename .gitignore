@@ -15,3 +15,6 @@
 
 # ignore all data
 /data
+
+# ignore all zip files
+*.zip
