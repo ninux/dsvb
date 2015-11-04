@@ -50,8 +50,8 @@ Wert berechnet, welcher zudem per \emph{call-by-value} übergeben wird und
 somit auf dem Stack liegt. Dies ist sicherlich massiv schneller als eine
 Berechnung per Lese- und Schreibzugriff auf entfernten Speicher (Heap).
 
+\newpage
 \subsection{Q3}
-
 Ausgehend von der Formel (4.47) aus dem Skript soll gezeigt werden, dass die
 Berechnungsmethode für die Signalleistung in der Funktion
 \lstinline{goertzel_filter_v0} identisch ist zu jener welche in der Abbildung
@@ -59,13 +59,13 @@ Berechnungsmethode für die Signalleistung in der Funktion
 $\frac{2}{N^2}$.
 
 \subsubsection*{Antwort}
-Formel aus dem Skript
+Formel aus dem Skript:
 \[
 	P_k
 	= 2 \left| \frac{X[k]}{N} \right|^2
 	= \frac{2}{N^2} \left( \Re\{X[k]\}^2 + \Im\{X[k]\}^2 \right)
 \]
-Berechnung aus dem Code
+Berechnung aus dem Code:
 \[
 	\left( x[k-1] \right)^2
 		+ \left( x[k-1] \right)^2
@@ -132,8 +132,41 @@ diesem Falle sind diese beiden Formeln gleich.
 	\end{array}
 \]
 
+\newpage
 \subsection{Q4}
-
 Vergleichen Sie die Berechnungsmethoden der Versionen \lstinline{v0} und
 \lstinline{v1} bezüglich deren Effizienz und numerischen Robustheit.
 Welche Version ist vorzuziehen?
+
+\subsubsection*{Antwort}
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{l l l}
+		Operationen
+			& v0
+			& v1 \\
+		\hline
+		Multiplikationen
+			& 4
+			& 4 \\
+		Bitshifts
+			& 23
+			& 44 \\
+		Additionen
+			& 1
+			& 2 \\
+	\end{tabular}
+	\caption{Vergleich der Operationen von v0 und v1}
+\end{table}
+
+Bei v1 werden etwas mehr Bitshifts und eine zusätzliche Addition ausgeführt.
+Ansonsten gibt es keinen herausstehenden Unterscheied bis auf einen: Bei v1
+wird ein Bitshift von $2^{16}$ ausgeführt bei der Summierung des Ergebnisses.
+Bei v0 wird hier lediglich ein Bitshoft von $2^9$ aufgeführt. Zudem werden die
+beiden Zwischenwerte bei v1 nach einem Bitshift von $2^{14}$ quadriert, bei
+v0 wird der Bitshift lediglich bei einem der drei Summanden vorgenommen vor
+der Summation.
+
+Es ist naheliegend, dass die v0 eine besser Qualität erzielen dürfte
+insbesondere mit Hinsicht auf die numerische Genauigkeit bzw. Robustheit.
