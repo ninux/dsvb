@@ -23,6 +23,7 @@ Der Wert für \lstinline{SCALING_FREQUENCY} ergibt sich aus
 \subsection{ToDo -- 2}
 Die Werte sind gegeben in der AppNote SPRA096A (p7, table 2).
 
+\newpage
 \subsection{ToDo -- 3}
 Um das Array \lstinline{delay[]} auf zwei Elemente zu reduzieren kann der
 Algorithmus nach folgendem Pseudocode implementiert werden:
@@ -33,6 +34,13 @@ delay[1] <- delay[0];
 delay[0] <- output;
 \end{lstlisting}
 
+
+\lstinputlisting[firstline=99, lastline=113, title=goertzel.c]{../src/goertzel.c}
+
+Nun müssen allerdings auch die Indexe angepasst werden in abhängigen Funktionen.
+\lstinputlisting[firstline=127, lastline=157, title=goertzel.c]{../src/goertzel.c}
+
+\newpage
 \subsection{ToDo -- 4}
 Um die Koeffizienten zu berechnen müssen wir den Ausdruck für $W_N$ in
 Real- und Imaginärteil zerlegen. Allgemein gilt die Beziehung
@@ -65,8 +73,10 @@ Daraus leiten wir nun ab, wie die Koeffizienten zu berechnen sind für die
 		1 477	& 13 085	& -30 042 \\
 		1 633	& 9 315		& -31 416 \\
 	\end{tabular}
-	\caption{Twilldle Koeffizienten}
+	\caption{Twiddle Koeffizienten}
 \end{table}
 
-\subsection{ToDo -- 5}
+\lstinputlisting[firstline=69, lastline=94, title=goertzel.h]{../src/goertzel.h}
 
+\subsection{ToDo -- 5}
+\lstinputlisting[firstline=172, lastline=194, title=goertzel.c]{../src/goertzel.c}
